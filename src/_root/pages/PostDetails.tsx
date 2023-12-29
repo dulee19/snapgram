@@ -5,14 +5,9 @@ import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetPostById, useDeletePost } from "@/lib/react-query/queriesAndMutations"
 import { multiFormatDateString } from "@/lib/utils";
-import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
 
 const PostDetails = () => {
-  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
-
   const navigate = useNavigate();
-  const { toast } = useToast();
   const { id } = useParams();
   const { data: post, isPending } = useGetPostById(id || '');
   const { user } = useUserContext();
@@ -20,36 +15,12 @@ const PostDetails = () => {
   const { mutate: deletePost } = useDeletePost();
 
   const handleDeletePost = () => {
-    setConfirmationModalOpen(true)
-  }
-
-  const confirmDeletePost = () => {
-    setConfirmationModalOpen(false);
-
     deletePost({
       postId: id,
       imageId: post?.imageId
     });
-
-    toast({
-      title: 'Post has been successfully removed',
-      duration: 5000,
-      isClosable: true
-    })
-
-    navigate(-1);
-  };
-
-  const cancelDeletePost = () => {
-    setConfirmationModalOpen(false);
-
-    toast({
-      title: 'Deletion canceled',
-      status: 'info',
-      duration: 3000,
-      isClosable: true,
-    });
-  };
+    navigate(-1)
+  }
 
   return (
     <div className="post_details-container">
@@ -91,16 +62,6 @@ const PostDetails = () => {
                     height={24}
                   />
                 </Link>
-
-                {isConfirmationModalOpen && (
-                  <div className="confirmation-modal fixed top-0 right-0 p-4 bg-gray-950 max-w-5xl text-center mx-auto">
-                    <p>Are you sure you want to delete this post?</p>
-                    <div className="flex justify-center gap-3 my-3">
-                      <Button variant="ghost" className="shad-button_dark_4" onClick={confirmDeletePost}>Yes</Button>
-                      <Button variant="ghost" className="shad-button_dark_4" onClick={cancelDeletePost}>No</Button>
-                    </div>
-                  </div>
-                )}
 
                 <Button
                   onClick={handleDeletePost}

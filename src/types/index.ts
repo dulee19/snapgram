@@ -1,14 +1,5 @@
 import React from "react";
 
-export type IContextType = {
-    user: IUser;
-    isLoading: false;
-    setUser: React.Dispatch<React.SetStateAction<IUser>>;
-    isAuthenticated: boolean;
-    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-    checkAuthUser: () => Promise<boolean>;
-}
-
 export type INewUser = {
     name: string;
     email: string;

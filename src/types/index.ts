@@ -1,5 +1,3 @@
-import React from "react";
-
 export type INewUser = {
     name: string;
     email: string;
